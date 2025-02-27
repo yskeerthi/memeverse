@@ -218,10 +218,92 @@ I'll provide you with the full React codebase for **MemeVerse**, following the e
     npm run dev
     ```
 
-### **Final Deliverables**  
-- **GitHub Repository** (Push your code)
-- **Vercel/Netlify Deployment** (Deploy the app)
-- **README.md** (Explain your tech stack and features)
-- **Demo Video** (Showcase your project)
+// MemeUpload.jsx - Upload memes with preview
+```
+import { useState } from "react";
+import { motion } from "framer-motion";
 
-This is the **full implementation** of the MemeVerse project using only React and the mentioned tech stack. 🚀
+const MemeUpload = () => {
+  const [image, setImage] = useState(null);
+  const [caption, setCaption] = useState("");
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setImage(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center p-6 bg-gray-900 text-white">
+      <motion.h2 className="text-3xl font-bold mb-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>Upload Meme</motion.h2>
+      <input type="file" accept="image/*" onChange={handleImageUpload} className="mb-4" />
+      {image && <img src={image} alt="Preview" className="w-64 h-64 rounded-lg shadow-lg mb-4" />}
+      <input type="text" placeholder="Add Caption" value={caption} onChange={(e) => setCaption(e.target.value)} className="p-2 rounded-md bg-gray-800 text-white" />
+      <motion.button whileHover={{ scale: 1.1 }} className="bg-blue-500 px-4 py-2 rounded-md mt-4">Upload</motion.button>
+    </div>
+  );
+};
+export default MemeUpload;
+
+```
+// MemeDetails.jsx - Displays meme details
+
+```
+import { useState } from "react";
+import { motion } from "framer-motion";
+
+const MemeDetails = ({ meme }) => {
+  const [likes, setLikes] = useState(() => parseInt(localStorage.getItem(meme.id)) || 0);
+
+  const handleLike = () => {
+    const newLikes = likes + 1;
+    setLikes(newLikes);
+    localStorage.setItem(meme.id, newLikes);
+  };
+
+  return (
+    <div className="p-6 bg-gray-900 text-white flex flex-col items-center">
+      <img src={meme.url} alt="Meme" className="w-72 h-72 rounded-lg shadow-lg mb-4" />
+      <p className="text-lg">{meme.caption}</p>
+      <motion.button whileHover={{ scale: 1.1 }} onClick={handleLike} className="mt-4 bg-red-500 px-4 py-2 rounded-md">❤️ {likes}</motion.button>
+    </div>
+  );
+};
+export default MemeDetails;
+```
+
+// Leaderboard.jsx - Displays top 10 memes by likes
+```
+import { useEffect, useState } from "react";
+
+const Leaderboard = ({ memes }) => {
+  const [sortedMemes, setSortedMemes] = useState([]);
+
+  useEffect(() => {
+    const rankedMemes = memes.map((meme) => ({ ...meme, likes: parseInt(localStorage.getItem(meme.id)) || 0 }))
+      .sort((a, b) => b.likes - a.likes)
+      .slice(0, 10);
+    setSortedMemes(rankedMemes);
+  }, [memes]);
+
+  return (
+    <div className="p-6 bg-gray-900 text-white">
+      <h2 className="text-3xl font-bold mb-4">Leaderboard</h2>
+      <ul>
+        {sortedMemes.map((meme, index) => (
+          <li key={meme.id} className="flex items-center gap-4 p-2 bg-gray-800 rounded-md mb-2">
+            <span className="text-xl font-bold">#{index + 1}</span>
+            <img src={meme.url} alt="Meme" className="w-12 h-12 rounded-md" />
+            <p>{meme.caption}</p>
+            <span className="ml-auto">❤️ {meme.likes}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+export default Leaderboard;
+```
