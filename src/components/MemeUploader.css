@@ -1,0 +1,96 @@
+.main-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to right, #2A1A49, #7151af);
+    font-family: Arial, sans-serif;
+}
+
+.meme-container {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 400px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #3f3c44;
+    margin-bottom: 15px;
+    animation: popIn 0.8s ease-in-out;
+}
+
+.upload-section, .caption-section, .adjustment-section {
+    margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+input[type="file"], input[type="text"], button {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    outline: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+input[type="file"] {
+    background:#2f2641;
+    color: whitesmoke;
+    cursor: pointer;
+}
+
+input[type="text"] {
+    border: 2px solid #2f2641;
+}
+
+button {
+    background:#2f2641;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #2b2a2d;
+    transform: scale(1.05);
+}
+
+.preview-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1b1a19;
+    margin-top: 10px;
+}
+
+.preview-section {
+    border: 2px solid #e5daae;
+    border-radius: 8px;
+    background: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    overflow: hidden;
+}
+
+#meme-canvas {
+    max-width: 100%;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
